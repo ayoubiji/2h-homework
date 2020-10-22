@@ -10,8 +10,13 @@
     "@angular/platform-browser": "10.1.4",
     "@angular/platform-browser-dynamic": "10.1.4",
     "@angular/router": "10.1.4",
+    "@ngrx/effects": "^10.0.1",
+    "@ngrx/schematics": "^10.0.1",
+    "@ngrx/store": "^10.0.1",
+    "@ngrx/store-devtools": "^10.0.1",
     "core-js": "2.6.2",
     "rxjs": "6.6.3",
+    "rxjs-compat": "^6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
