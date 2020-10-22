@@ -1,7 +1,8 @@
+import { Ticket } from "./../../../../interfaces/ticket.interface";
+import { BackendService } from "./../../../backend.service";
 import { Effect, Actions, ofType } from "@ngrx/effects";
 import { Injectable } from "@angular/core";
 import "rxjs/add/operator/map";
-import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/share";
@@ -19,7 +20,8 @@ export class TicketEffects extends AppEffect {
   constructor(
     private action$: Actions<Action>,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private api: BackendService
   ) {
     super(http);
   }
@@ -32,13 +34,13 @@ export class TicketEffects extends AppEffect {
         TicketEffectsTypes.EffectTypes.GET_ALL_TICKET_EFFECT
       )
     )
-
     .switchMap((action) => {
-      return this.get$(this.apiUrl)
-        .map((data: any) => {
-          return new TicketsAction.GetAllTicket({
-            tickes: null,
-          });
+      console.log("action", action);
+      return this.api
+        .tickets()
+        .map((data: Array<Ticket>) => {
+          console.log("data", data);
+          return new TicketsAction.GetAllTicket(data);
         })
         .catch((err) => of(new TicketsAction.GetAllTicketError(err)));
     })
@@ -55,17 +57,17 @@ export class TicketEffects extends AppEffect {
     TicketAction.GetTicket | TicketAction.All
   > = this.action$
     .pipe(
-      ofType<TicketEffectsTypes.GetAllTicketEffect>(
-        TicketEffectsTypes.EffectTypes.GET_ALL_TICKET_EFFECT
+      ofType<TicketEffectsTypes.GetTicketEffect>(
+        TicketEffectsTypes.EffectTypes.GET_TICKET_EFFECT
       )
     )
 
     .switchMap((action) => {
-      return this.get$(this.apiUrl)
-        .map((data: any) => {
-          return new TicketAction.GetTicket({
-            tickes: null,
-          });
+      return this.api
+        .ticket(action.payload.ticket_id)
+        .map((data: Ticket) => {
+          console.log("data", data);
+          return new TicketAction.GetTicket(data);
         })
         .catch((err) => of(new TicketAction.GetTicketError(err)));
     })

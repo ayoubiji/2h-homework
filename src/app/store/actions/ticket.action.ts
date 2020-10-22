@@ -9,10 +9,6 @@ export class GetTicketError implements Action {
 }
 export class GetTicket implements Action {
   type = ActionTypes.GET_TICKET;
-  constructor(
-    public payload: {
-      tickes: any;
-    }
-  ) {}
+  constructor(public payload) {}
 }
 export type All = GetTicket | GetTicketError;
